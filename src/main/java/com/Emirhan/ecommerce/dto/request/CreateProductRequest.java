@@ -1,0 +1,15 @@
+package com.Emirhan.ecommerce.dto.request;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class CreateProductRequest {
+
+    private String name;
+    private String description;
+    private double price;
+    private int stock;
+    private Long categoryId;
+}
