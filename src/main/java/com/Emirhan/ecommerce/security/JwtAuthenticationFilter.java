@@ -1,5 +1,7 @@
 package com.Emirhan.ecommerce.security;
 
+import com.Emirhan.ecommerce.security.CustomUserDetailsService;
+import com.Emirhan.ecommerce.security.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,20 +10,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/auth/");
-    }
+    // BU KISMI KALDIRIN VEYA YORUMA ALIN
+    // @Override
+    // protected boolean shouldNotFilter(HttpServletRequest request) {
+    //     return request.getServletPath().startsWith("/auth/");
+    // }
 
     @Override
     protected void doFilterInternal(
@@ -32,14 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer")) {
+        // "Bearer " kontrolü (Boşluk karakterine dikkat!)
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
             if (jwtUtil.isTokenValid(token)) {
                 String email = jwtUtil.extractEmail(token);
-
-                UserDetails userDetails =
-                        userDetailsService.loadUserByUsername(email);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
@@ -48,11 +53,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 userDetails.getAuthorities()
                         );
 
-                SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
+                // WebAuthenticationDetails eklemek bazen sorunu çözer
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-
+        // Bu satır if bloğunun dışında olmalı (zaten öyle, doğru)
         filterChain.doFilter(request, response);
     }
 }

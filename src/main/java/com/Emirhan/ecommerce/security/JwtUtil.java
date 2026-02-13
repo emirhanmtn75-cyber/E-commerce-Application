@@ -10,11 +10,15 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final String SECRET =
+            "mySuperSecretKeyMySuperSecretKey123"; // en az 32 karakter
 
-    private final long expirationMs = 1000 * 60 * 60 * 24; // 1 gün
+    private final Key key =
+            Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    // TOKEN ÜRET
+    private final long expirationMs =
+            1000 * 60 * 60 * 24; // 1 gün
+
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -24,7 +28,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // TOKEN'DAN EMAIL ÇEK
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -34,12 +37,15 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    // TOKEN GEÇERLİ Mİ?
     public boolean isTokenValid(String token) {
         try {
-            extractEmail(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
             return true;
-        } catch (JwtException e) {
+        } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("JWT ERROR: " + e.getMessage());
             return false;
         }
     }

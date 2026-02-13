@@ -27,6 +27,8 @@ public class ProductController {
 
     @GetMapping
     public List<ProductResponse> getAllProducts() {
+        System.out.println("çalıştı");
+
         return productService.getAllProducts();
     }
 
