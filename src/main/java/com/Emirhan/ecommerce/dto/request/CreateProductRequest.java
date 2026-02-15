@@ -9,7 +9,8 @@ public class CreateProductRequest {
 
     private String name;
     private String description;
+    private String imageUrl;
     private double price;
     private int stock;
-    private Long categoryId;
+    private String categoryName;
 }

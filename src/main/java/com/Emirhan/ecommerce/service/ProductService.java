@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +20,10 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     public ProductResponse createProduct(CreateProductRequest request) {
 
-        Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryRepository.findByName(request.getCategoryName());
 
         Product product = new Product();
-        product.setName(request.getName());
+        product.setTitle(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
         product.setStock(request.getStock());
@@ -37,13 +37,14 @@ public class ProductService {
     public List<Product> createProducts(List<CreateProductRequest> requests) {
     List<Product> products = requests.stream()
             .map(request -> {
-                Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
+                Category category = categoryRepository.findByName(request.getCategoryName());
                 Product product = new Product();
-                product.setName(request.getName());
+                product.setTitle(request.getName());
                 product.setDescription(request.getDescription());
                 product.setPrice(request.getPrice());
                 product.setStock(request.getStock());
                 product.setCategory(category);
+                product.setImageUrl(request.getImageUrl());
                 return product;
             }).toList();
     return productRepository.saveAll(products);
@@ -51,13 +52,35 @@ public class ProductService {
     private ProductResponse mapToResponse(Product product) {
         ProductResponse response = new ProductResponse();
         response.setId(product.getId());
-        response.setName(product.getName());
+        response.setName(product.getTitle());
         response.setDescription(product.getDescription());
         response.setPrice(product.getPrice());
         response.setStock(product.getStock());
         response.setCategoryId(product.getCategory().getId());
+        response.setImageUrl(product.getImageUrl());
         response.setCategoryName(product.getCategory().getName());
         return response;
+    }
+    public Product mapJsonToEntity(Map<String, Object> json, CategoryRepository categoryRepository) {
+        Product product = new Product();
+
+        product.setTitle((String) json.get("title"));
+        product.setDescription((String) json.get("description"));
+        product.setPrice(((Number) json.get("price")).doubleValue());
+        product.setStock(((Number) json.get("stock")).intValue());
+
+        // İlk resmi al
+        List<String> images = (List<String>) json.get("images");
+        if (images != null && !images.isEmpty()) {
+            product.setImageUrl(images.get(0));
+        }
+
+        // Category lookup
+        String categoryName = (String) json.get("category");
+        Category category = categoryRepository.findByName(categoryName);
+        product.setCategory(category);
+
+        return product;
     }
 
 

@@ -66,7 +66,7 @@ public class CartService {
                 .map(item -> new CartItemResponse(
                         item.getId(),
                         item.getProduct().getId(),
-                        item.getProduct().getName(),
+                        item.getProduct().getTitle(),
                         item.getProduct().getPrice(),
                         item.getQuantity()
                 ))

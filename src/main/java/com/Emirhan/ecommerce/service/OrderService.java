@@ -57,7 +57,7 @@ public class OrderService {
             // stok kontrolü
             if (product.getStock() < cartItem.getQuantity()) {
                 throw new RuntimeException(
-                        "Not enough stock for product: " + product.getName()
+                        "Not enough stock for product: " + product.getTitle()
                 );
             }
 
@@ -126,7 +126,7 @@ public class OrderService {
 
     private OrderItemResponse mapToItemResponse(OrderItem OrderItem) {
       OrderItemResponse orderItemResponse=new OrderItemResponse();
-      orderItemResponse.setProductName(OrderItem.getProduct().getName());
+      orderItemResponse.setProductName(OrderItem.getProduct().getTitle());
       orderItemResponse.setQuantity(OrderItem.getQuantity());
       orderItemResponse.setPrice(OrderItem.getPrice());
       return orderItemResponse;
