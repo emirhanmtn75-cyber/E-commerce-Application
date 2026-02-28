@@ -7,6 +7,7 @@ import com.Emirhan.ecommerce.entity.*;
 import com.Emirhan.ecommerce.repository.*;
 import com.Emirhan.ecommerce.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,13 @@ public class CartService {
     private final UserRepository userRepository;
 
     public void addToCart(AddToCartRequest request) {
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+        request.setUserId(userRepository.findByEmail(email).getId());
 
-        User user = userRepository.findById(request.getUserId())
+            User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Cart cart = cartRepository.findByUser(user)
@@ -68,6 +74,7 @@ public class CartService {
                         item.getProduct().getId(),
                         item.getProduct().getTitle(),
                         item.getProduct().getPrice(),
+                        item.getProduct().getImageUrl(),
                         item.getQuantity()
                 ))
                 .collect(Collectors.toList());
