@@ -1,7 +1,5 @@
 package com.Emirhan.ecommerce.security;
 
-import com.Emirhan.ecommerce.security.CustomUserDetailsService;
-import com.Emirhan.ecommerce.security.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

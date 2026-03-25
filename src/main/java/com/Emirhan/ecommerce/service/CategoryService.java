@@ -4,7 +4,6 @@ import com.Emirhan.ecommerce.entity.Category;
 import com.Emirhan.ecommerce.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

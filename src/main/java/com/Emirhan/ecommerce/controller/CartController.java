@@ -2,8 +2,6 @@ package com.Emirhan.ecommerce.controller;
 
 import com.Emirhan.ecommerce.dto.request.AddToCartRequest;
 import com.Emirhan.ecommerce.dto.response.CartItemResponse;
-import com.Emirhan.ecommerce.dto.request.AddToCartRequest;
-import com.Emirhan.ecommerce.service.CartService;
 import com.Emirhan.ecommerce.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

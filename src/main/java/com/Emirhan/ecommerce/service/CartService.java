@@ -2,7 +2,7 @@ package com.Emirhan.ecommerce.service;
 
 import com.Emirhan.ecommerce.dto.request.AddToCartRequest;
 import com.Emirhan.ecommerce.dto.response.CartItemResponse;
-import com.Emirhan.ecommerce.dto.request.AddToCartRequest;
+
 import com.Emirhan.ecommerce.entity.*;
 import com.Emirhan.ecommerce.repository.*;
 import com.Emirhan.ecommerce.repository.CartRepository;

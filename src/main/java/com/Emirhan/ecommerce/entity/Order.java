@@ -1,7 +1,5 @@
 package com.Emirhan.ecommerce.entity;
 
-import com.Emirhan.ecommerce.entity.OrderItem;
-import com.Emirhan.ecommerce.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

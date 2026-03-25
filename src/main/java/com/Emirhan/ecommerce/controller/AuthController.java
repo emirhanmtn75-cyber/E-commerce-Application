@@ -4,9 +4,6 @@ import com.Emirhan.ecommerce.dto.response.AuthResponse;
 import com.Emirhan.ecommerce.dto.request.LoginRequest;
 import com.Emirhan.ecommerce.dto.request.RegisterRequest;
 import com.Emirhan.ecommerce.service.AuthService;
-import com.Emirhan.ecommerce.dto.request.RegisterRequest;
-import com.Emirhan.ecommerce.dto.response.AuthResponse;
-import com.Emirhan.ecommerce.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -2,10 +2,8 @@ package com.Emirhan.ecommerce.service;
 
 import com.Emirhan.ecommerce.dto.request.LoginRequest;
 import com.Emirhan.ecommerce.dto.request.RegisterRequest;
-import com.Emirhan.ecommerce.dto.request.RegisterRequest;
 import com.Emirhan.ecommerce.entity.User;
 import com.Emirhan.ecommerce.enums.Role;
-import com.Emirhan.ecommerce.repository.UserRepository;
 import com.Emirhan.ecommerce.repository.UserRepository;
 import com.Emirhan.ecommerce.security.JwtUtil;
 import lombok.RequiredArgsConstructor;

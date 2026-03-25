@@ -1,6 +1,5 @@
 package com.Emirhan.ecommerce.dto.response;
 
-import com.Emirhan.ecommerce.dto.response.OrderItemResponse;
 import lombok.Getter;
 import lombok.Setter;
 

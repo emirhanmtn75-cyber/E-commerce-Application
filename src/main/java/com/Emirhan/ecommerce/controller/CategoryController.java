@@ -1,10 +1,8 @@
 package com.Emirhan.ecommerce.controller;
 
 import com.Emirhan.ecommerce.entity.Category;
-import com.Emirhan.ecommerce.repository.CategoryRepository;
 import com.Emirhan.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

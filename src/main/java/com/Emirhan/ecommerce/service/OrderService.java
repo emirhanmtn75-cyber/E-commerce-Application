@@ -3,7 +3,6 @@ package com.Emirhan.ecommerce.service;
 import com.Emirhan.ecommerce.dto.response.OrderDetailResponse;
 import com.Emirhan.ecommerce.dto.response.OrderItemResponse;
 import com.Emirhan.ecommerce.dto.response.OrderResponse;
-import com.Emirhan.ecommerce.dto.response.ProductResponse;
 import com.Emirhan.ecommerce.entity.*;
 import com.Emirhan.ecommerce.repository.*;
 import jakarta.transaction.Transactional;
