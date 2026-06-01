@@ -1,36 +1,40 @@
 package com.Emirhan.ecommerce.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final String SECRET =
-            "mySuperSecretKeyMySuperSecretKey123"; // en az 32 karakter
+    @Value("${app.jwt.secret:mySuperSecretKeyMySuperSecretKey123}")
+    private String secret = "mySuperSecretKeyMySuperSecretKey123";
 
-    private final Key key =
-            Keys.hmacShaKeyFor(SECRET.getBytes());
+    @Value("${app.jwt.expiration-ms:86400000}")
+    private long expirationMs = 1000 * 60 * 60 * 24;
 
-    private final long expirationMs =
-            1000 * 60 * 60 * 24; // 1 gün
+    private Key signingKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
-                .signWith(key)
+                .signWith(signingKey())
                 .compact();
     }
 
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(signingKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -40,7 +44,7 @@ public class JwtUtil {
     public boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(key)
+                    .setSigningKey(signingKey())
                     .build()
                     .parseClaimsJws(token);
             return true;

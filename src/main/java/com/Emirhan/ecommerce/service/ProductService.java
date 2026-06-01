@@ -15,7 +15,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     public ProductResponse createProduct(CreateProductRequest request) {
@@ -33,7 +32,6 @@ public class ProductService {
 
         return mapToResponse(savedProduct);
     }
-
     public List<Product> createProducts(List<CreateProductRequest> requests) {
     List<Product> products = requests.stream()
             .map(request -> {
@@ -69,7 +67,6 @@ public class ProductService {
         product.setPrice(((Number) json.get("price")).doubleValue());
         product.setStock(((Number) json.get("stock")).intValue());
 
-        // İlk resmi al
         List<String> images = (List<String>) json.get("images");
         if (images != null && !images.isEmpty()) {
             product.setImageUrl(images.get(0));
@@ -82,25 +79,18 @@ public class ProductService {
 
         return product;
     }
-
-
-
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
     }
-
-
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         return mapToResponse(product);
     }
-
-
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }

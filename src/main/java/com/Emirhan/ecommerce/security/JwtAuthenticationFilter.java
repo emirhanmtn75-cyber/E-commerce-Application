@@ -20,44 +20,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
-
-    // BU KISMI KALDIRIN VEYA YORUMA ALIN
-    // @Override
-    // protected boolean shouldNotFilter(HttpServletRequest request) {
-    //     return request.getServletPath().startsWith("/auth/");
-    // }
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
-
         String authHeader = request.getHeader("Authorization");
-
-        // "Bearer " kontrolü (Boşluk karakterine dikkat!)
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-
             if (jwtUtil.isTokenValid(token)) {
                 String email = jwtUtil.extractEmail(token);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
                                 null,
                                 userDetails.getAuthorities()
                         );
-
-                // WebAuthenticationDetails eklemek bazen sorunu çözer
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-        // Bu satır if bloğunun dışında olmalı (zaten öyle, doğru)
         filterChain.doFilter(request, response);
     }
 }

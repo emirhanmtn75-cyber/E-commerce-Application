@@ -15,6 +15,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    @PostMapping
+    public void createCurrentUserOrder() {
+        orderService.createOrderForCurrentUser();
+    }
+
     @PostMapping("/{userId}")
     public void createOrder(@PathVariable Long userId) {
         orderService.createOrder(userId);

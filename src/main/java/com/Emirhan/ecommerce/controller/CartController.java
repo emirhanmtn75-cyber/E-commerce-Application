@@ -1,6 +1,7 @@
 package com.Emirhan.ecommerce.controller;
 
 import com.Emirhan.ecommerce.dto.request.AddToCartRequest;
+import com.Emirhan.ecommerce.dto.request.UpdateCartItemRequest;
 import com.Emirhan.ecommerce.dto.response.CartItemResponse;
 import com.Emirhan.ecommerce.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,11 @@ public class CartController {
         cartService.addToCart(request);
     }
 
+    @GetMapping
+    public List<CartItemResponse> getCurrentUserCart() {
+        return cartService.getCurrentUserCartItems();
+    }
+
     // 📄 Sepeti listele
     @GetMapping("/{userId}")
     public List<CartItemResponse> getCart(@PathVariable Long userId) {
@@ -31,5 +37,10 @@ public class CartController {
     @DeleteMapping("/remove/{cartItemId}")
     public void removeItem(@PathVariable Long cartItemId) {
         cartService.removeCartItem(cartItemId);
+    }
+
+    @PutMapping("/update/{cartItemId}")
+    public void updateItem(@PathVariable Long cartItemId, @RequestBody UpdateCartItemRequest request) {
+        cartService.updateCartItemQuantity(cartItemId, request.getQuantity());
     }
 }
