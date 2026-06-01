@@ -24,7 +24,7 @@ function Navbar() {
         </button>
 
         <button onClick={() => navigate("/cart")}>
-          Sepet
+          Sepetim
         </button>
 
         <button className="logout-btn" onClick={handleLogout}>

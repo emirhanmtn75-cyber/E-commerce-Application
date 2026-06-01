@@ -1,37 +1,57 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import "./Products.css";
 
 function Products() {
   const [products, setProducts] = useState([]);
+  const [toast, setToast] = useState({ message: "", type: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await api.get("/api/products");
+        setProducts(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchProducts();
   }, []);
-const addToCart = async (productId) => {
-  try {
-    await api.post("/api/cart/add", {
-      productId: productId,
-      quantity: 1,
-    });
 
-    alert("Ürün sepete eklendi");
-  } catch (err) {
-    alert("Sepete eklenemedi");
-  }
-};
-
-  const fetchProducts = async () => {
+  const addToCart = async (productId) => {
     try {
-      const res = await api.get("/api/products");
-      setProducts(res.data);
+      await api.post("/api/cart/add", {
+        productId: productId,
+        quantity: 1,
+      });
+
+      setToast({ message: "Ürün sepete eklendi", type: "success" });
+
+      setTimeout(() => {
+        setToast({ message: "", type: "" });
+      }, 3000);
+
     } catch (err) {
-      console.error(err);
+      setToast({ message: "Sepete eklenemedi", type: "error" });
+
+      setTimeout(() => {
+        setToast({ message: "", type: "" });
+      }, 3000);
     }
   };
 
   return (
     <div className="marketplace">
+
+      {/* TOAST */}
+      {toast.message && (
+        <div className={`toast ${toast.type}`}>
+          {toast.message}
+        </div>
+      )}
 
       {/* TOP BAR */}
       <div className="topbar">
@@ -52,7 +72,13 @@ const addToCart = async (productId) => {
         <div className="header-actions">
           <span>Hesabım</span>
           <span>Favorilerim</span>
-          <span className="cart">Sepetim</span>
+          <span
+            className="cart"
+            onClick={() => navigate("/cart")}
+            style={{ cursor: "pointer" }}
+          >
+            Sepetim
+          </span>
         </div>
       </div>
 
@@ -67,7 +93,7 @@ const addToCart = async (productId) => {
         <span>Spor</span>
       </div>
 
-      {/* ICON SLIDER */}
+      {/* ICON ROW */}
       <div className="icon-row">
         <div className="icon-item">🔥 Fırsatlar</div>
         <div className="icon-item">💄 Kozmetik</div>
@@ -85,26 +111,29 @@ const addToCart = async (productId) => {
           {products.map((product) => (
             <div key={product.id} className="product-card">
 
-  <div className="image-wrapper">
-    <img
-      src={product.imageUrl || "https://via.placeholder.com/300"}
-      alt={product.name}
-    />
-    <span className="favorite">♡</span>
-    <span className="discount">%20</span>
-  </div>
+              <div className="image-wrapper">
+                <img
+                  src={product.imageUrl || "https://via.placeholder.com/300"}
+                  alt={product.name}
+                />
+                <span className="favorite">♡</span>
+                <span className="discount">%20</span>
+              </div>
 
-  <div className="product-info">
-    <p className="brand">MARKA</p>
-    <p className="product-title">{product.name}</p>
-    <span className="price">{product.price} ₺</span>
-  </div>
+              <div className="product-info">
+                <p className="brand">MARKA</p>
+                <p className="product-title">{product.name}</p>
+                <span className="price">{product.price} ₺</span>
+              </div>
 
-  <button onClick={() => addToCart(product.id)}>
-  Sepete Ekle
-</button>
+              <button
+                className="cart-btn"
+                onClick={() => addToCart(product.id)}
+              >
+                Sepete Ekle
+              </button>
 
-</div>
+            </div>
           ))}
         </div>
       </div>

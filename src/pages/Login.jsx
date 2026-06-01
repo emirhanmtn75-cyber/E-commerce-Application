@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../api/axios";
 import { AuthContext } from "../auth/AuthContext";
 import "./Login.css";
@@ -26,7 +26,6 @@ function Login() {
 
       login(res.data.message);
       navigate("/products");
-
     } catch (err) {
       setError("Email veya şifre hatalı");
     } finally {
@@ -71,7 +70,7 @@ function Login() {
         </form>
 
         <p className="footer-text">
-          Hesabın yok mu? <span>Kayıt Ol</span>
+          Hesabın yok mu? <Link to="/register">Kayıt Ol</Link>
         </p>
       </div>
     </div>

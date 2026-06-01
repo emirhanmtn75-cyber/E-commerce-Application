@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import ProtectedRoute from "./auth/ProtectedRoute";
@@ -9,6 +10,7 @@ function App() {
     <Routes>
       {/* Public */}
       <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       {/* Protected */}
       <Route

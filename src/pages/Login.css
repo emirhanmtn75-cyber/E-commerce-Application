@@ -10,7 +10,15 @@
   align-items: center;
   justify-content: center;
 }
-
+.success {
+  background: #e8f8ee;
+  color: #198754;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: center;
+}
 .login-card {
   width: 380px;
   background: #fff;
