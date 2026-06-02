@@ -6,10 +6,13 @@ const api = axios.create({
   baseURL: baseURL.replace(/\/$/, ""),
 });
 
-// JWT otomatik header’a eklensin
+// JWT otomatik header’a eklensin, auth endpointlerinde eski token gönderilmesin.
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) {
+  const url = config.url || "";
+  const isAuthEndpoint = url.startsWith("/auth/");
+
+  if (token && token !== "undefined" && token !== "null" && !isAuthEndpoint) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
