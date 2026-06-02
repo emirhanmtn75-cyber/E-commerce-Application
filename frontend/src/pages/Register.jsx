@@ -33,7 +33,16 @@ function Register() {
         navigate("/");
       }, 1200);
     } catch (err) {
-      setError("Kayıt başarısız. Email zaten kullanılıyor olabilir.");
+      const status = err.response?.status;
+      const message = err.response?.data?.message;
+
+      if (status === 409 || message === "Email already exists") {
+        setError("Bu email zaten kullanılıyor.");
+      } else if (message) {
+        setError(message);
+      } else {
+        setError("Kayıt başarısız. Bağlantı veya sunucu hatası oluştu.");
+      }
     } finally {
       setLoading(false);
     }
